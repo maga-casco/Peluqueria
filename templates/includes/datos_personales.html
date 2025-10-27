@@ -1,0 +1,37 @@
+{%load static%}
+<!DOCTYPE html>
+<html lang="es">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+<head>
+    <meta charset="UTF-8">
+    <title>Datos Personales</title>
+</head>
+<body>
+    {% include 'includes/navbar.html' %}
+    <h1>Datos Personales</h1>
+
+    <p><strong>Nombre completo:</strong> {{ user.nombre }} {{ user.apellido }}</p>
+    <p><strong>Correo electrónico:</strong> {{ user.email }}</p>
+
+    {% if user.is_cliente and user.cliente %}
+        <h2>Información del Cliente</h2>
+        <p><strong>DNI:</strong> {{ user.cliente.dni }}</p>
+        <p><strong>Fecha de nacimiento:</strong> {{ user.cliente.fecha_nacimiento }}</p>
+        <p><strong>Teléfono:</strong> {{ user.cliente.telefono }}</p>
+        <p><strong>Domicilio:</strong> {{ user.cliente.domicilio }}</p>
+        <p><strong>Edad:</strong> {{ user.cliente.edad }}</p>
+
+    {% elif user.is_empleado and user.empleado %}
+        <h2>Información del Empleado</h2>
+        <p><strong>DNI:</strong> {{ user.empleado.dni }}</p>
+        <p><strong>Fecha de nacimiento:</strong> {{ user.empleado.fecha_nacimiento }}</p>
+        <p><strong>Teléfono:</strong> {{ user.empleado.telefono }}</p>
+        <p><strong>Domicilio:</strong> {{ user.empleado.domicilio }}</p>
+        <p><strong>Puesto:</strong> {{ user.empleado.puesto }}</p>
+        <p><strong>Edad:</strong> {{ user.empleado.edad }}</p>
+
+    {% else %}
+        <p>No hay información adicional disponible para este usuario.</p>
+    {% endif %}
+</body>
+</html>
