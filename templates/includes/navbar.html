@@ -1,13 +1,15 @@
+{%load static%}
 <header class="header">
     <div class="logo">
-        <h1>Peluqueria Martita</h1>
+        <a href="{% url 'home' %}">
+            <img src="{% static 'images/logo.png' %}" alt="Peluquería Martita" class="logo-img">
+        </a>
     </div>
     <nav class="nav-menu">
         <ul>
             <li><a href="{% url 'home' %}">Inicio</a></li>
             <li><a href="#servicios">Servicios</a></li>
             <li><a href="#contacto">Contacto</a></li>
-
 
             {% if user.is_authenticated %}  <!-- si el usuario esta autenticado-->
                 <li><a href="{% url 'datos_personales' %}">{{ user.get_full_name }}</a></li>  <!-- muestra el nombre del usuario autenticado-->
