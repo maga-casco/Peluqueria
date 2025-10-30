@@ -70,19 +70,19 @@ def register(request):
     if request.method == 'POST': 
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
-            usuario = form.save(commit=False)    #guarda el usuario 
+            usuario = form.save(commit=False)   #uarda el usuario 
             # Todo registro desde la web será Cliente
             usuario.is_cliente = True
             usuario.is_empleado = False
-            usuario.save()  # dispara la señal y crea Cliente automáticamente
+            usuario.save()  # Dispara la señal y crea Cliente automáticamente
 
             messages.success(request, f'Cuenta creada para: {usuario.get_full_name()} (Cliente)')
             login(request, usuario)
             return redirect('home')
         else:
-            for msg in form.error_messages:
-                messages.error(request, f'{msg}: {form.error_messages[msg]}')
-
+            for field, errors in form.errors.items():
+                for error in errors:
+                    messages.error(request, error)
     else:
         form = CustomUserCreationForm()
     return render(request, 'registro/registro.html', {"form": form})
@@ -95,19 +95,15 @@ def login_request(request):
     if request.method == 'POST':
         form = AuthenticationForm(request, data=request.POST)
         if form.is_valid():
-            email = form.cleaned_data.get('username')  # AuthenticationForm usa 'username'
-            password = form.cleaned_data.get('password')
-            user = authenticate(email=email, password=password)
-            if user is not None:
-                login(request, user)
-                messages.success(request, f'Bienvenido {user.get_full_name()}')
-                return redirect('home')
-            else:
-                messages.error(request, 'Usuario o contraseña incorrecta')
+            user = form.get_user()  # Esto obtiene el usuario validado por AuthenticationForm
+            login(request, user)
+            messages.success(request, f'Bienvenido {user.get_full_name()}')
+            return redirect('home')
         else:
+            # Si form no es válido, muestra error
             messages.error(request, 'Usuario o contraseña incorrecta')
     else:
-        form = AuthenticationForm() #esto es para que aparezca el formulario vacio
+        form = AuthenticationForm() # Esto es para que aparezca el formulario vacio
     return render(request, 'login/Login.html', {'form': form})
 
 # -------------------------------------------
@@ -115,8 +111,7 @@ def login_request(request):
 # -------------------------------------------
 def logout_request(request):
     logout(request)
-    messages.info(request, "Has cerrado sesión exitosamente")
+    list(messages.get_messages(request))
     return redirect('home')
 
 #---------------------------------- LOGIN y demas en uso ----------------------------------#
-

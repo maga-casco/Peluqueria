@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from .models import User  # Tu modelo personalizado
+from .models import User
 
 class CustomUserCreationForm(UserCreationForm):
     class Meta:
@@ -11,3 +11,4 @@ class CustomUserCreationForm(UserCreationForm):
             'apellido': 'Apellido',
             'email': 'Correo electrónico',
         }
+

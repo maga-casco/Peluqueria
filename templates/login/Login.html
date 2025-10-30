@@ -6,12 +6,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Entrar</title>
-
 </head>
 <body>
-
     <div class="login-container">
     <h2>Iniciar Sesión</h2>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div style="color:red; font-weight:bold; text-align:center; margin-bottom:10px;">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
     
     <form method="POST">
         {% csrf_token %}
@@ -34,6 +40,5 @@
             </div>
     </form>
 </div>
-
 </body>
 </html>

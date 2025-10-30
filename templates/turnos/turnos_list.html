@@ -1,0 +1,42 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Turnos</title>
+    <link rel="stylesheet" href="{% static 'css/turno.css' %}">
+</head>
+<body>
+    {% include 'includes/navbar.html' %}
+    <div style="max-width:900px; margin:auto; padding:20px;">
+        <h1>Listado de Turnos</h1>
+
+        <a href="{% url 'crear_turno' %}" class="btn btn-success">+ Nuevo Turno</a>
+
+        <table border="1" style="width:100%; margin-top:20px; border-collapse:collapse;">
+            <tr>
+                <th>Cliente</th>
+                <th>Empleado</th>
+                <th>Servicio</th>
+                <th>Fecha</th>
+                <th>Hora</th>
+                <th>Observaciones</th>
+            </tr>
+            {% for turno in turnos %}
+            <tr>
+                <td>{{ turno.cliente.user.get_full_name }}</td>
+                <td>{{ turno.empleado.user.get_full_name }}</td>
+                <td>{{ turno.servicio.tipo_servicio }}</td>
+                <td>{{ turno.fecha }}</td>
+                <td>{{ turno.hora }}</td>
+                <td>{{ turno.observaciones }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6" style="text-align:center;">No hay turnos registrados.</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</body>
+</html>
